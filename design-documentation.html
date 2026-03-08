@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Design Documentation - Google Ads Reporting Tool</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 0 30px;
+      color: #222;
+      line-height: 1.8;
+      font-size: 14px;
+    }
+    h1 {
+      font-size: 24px;
+      border-bottom: 2px solid #2563eb;
+      padding-bottom: 10px;
+      margin-top: 40px;
+    }
+    h2 {
+      font-size: 18px;
+      color: #2563eb;
+      margin-top: 32px;
+    }
+    h3 {
+      font-size: 15px;
+      margin-top: 24px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px 14px;
+      text-align: left;
+    }
+    th {
+      background: #f1f5f9;
+      font-weight: 600;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .header h1 {
+      border: none;
+      font-size: 28px;
+      margin-bottom: 4px;
+    }
+    .header p {
+      color: #666;
+      margin: 4px 0;
+    }
+    .diagram {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 24px;
+      margin: 16px 0;
+      font-family: monospace;
+      font-size: 13px;
+      white-space: pre;
+      line-height: 1.5;
+    }
+    ul {
+      margin: 8px 0;
+      padding-left: 24px;
+    }
+    li {
+      margin: 4px 0;
+    }
+    .footer {
+      margin-top: 60px;
+      padding-top: 16px;
+      border-top: 1px solid #ddd;
+      color: #888;
+      font-size: 12px;
+    }
+    @media print {
+      body { margin: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>Design Documentation</h1>
+    <p><strong>Google Ads Automated Reporting Tool</strong></p>
+    <p>Jochen Reider | jochenreider.com | kontakt@jochenreider.com</p>
+    <p>Version 1.0 &mdash; February 2026</p>
+  </div>
+
+  <h1>1. Executive Summary</h1>
+  <p>
+    This document describes the design and architecture of our Google Ads Automated Reporting Tool.
+    The tool uses the Google Ads API to retrieve campaign performance data and generate
+    automated reports and dashboards for small and medium-sized businesses. The tool operates
+    in a read-only capacity and does not modify any campaign settings, budgets, or ad content.
+  </p>
+
+  <h1>2. Product Overview</h1>
+
+  <h2>2.1 Purpose</h2>
+  <p>
+    The tool automates the process of collecting, aggregating, and visualizing Google Ads campaign
+    data. It replaces manual data exports and spreadsheet-based reporting with an automated pipeline
+    that delivers scheduled reports to clients.
+  </p>
+
+  <h2>2.2 Target Users</h2>
+  <ul>
+    <li>Small and medium-sized businesses running Google Ads campaigns</li>
+    <li>Marketing managers who need regular performance insights</li>
+    <li>Business owners who want transparency into their ad spend</li>
+  </ul>
+
+  <h2>2.3 Core Features</h2>
+  <table>
+    <tr>
+      <th>Feature</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>Automated Data Retrieval</td>
+      <td>Scheduled pulls of campaign, ad group, and keyword performance data via the Google Ads API</td>
+    </tr>
+    <tr>
+      <td>KPI Dashboards</td>
+      <td>Visual dashboards showing key metrics: CTR, CPC, conversions, ROAS, cost-per-acquisition</td>
+    </tr>
+    <tr>
+      <td>Scheduled Reports</td>
+      <td>Automated weekly and monthly PDF/email reports delivered to clients</td>
+    </tr>
+    <tr>
+      <td>Performance Alerts</td>
+      <td>Email notifications when KPIs exceed or fall below defined thresholds</td>
+    </tr>
+    <tr>
+      <td>Historical Analysis</td>
+      <td>Trend analysis and period-over-period comparisons</td>
+    </tr>
+  </table>
+
+  <h1>3. Architecture</h1>
+
+  <h2>3.1 System Overview</h2>
+  <div class="diagram">
++---------------------+         +----------------------+         +------------------+
+|                     |         |                      |         |                  |
+|   Google Ads API    | ------> |   Data Pipeline      | ------> |   Data Storage   |
+|   (Read-Only)       |         |   (Cloud Functions)  |         |   (BigQuery)     |
+|                     |         |                      |         |                  |
++---------------------+         +----------------------+         +------------------+
+                                                                         |
+                                                                         v
+                                +----------------------+         +------------------+
+                                |                      |         |                  |
+                                |   Email Reports      | <------ |   Dashboard      |
+                                |   (Scheduled)        |         |   (Looker Studio)|
+                                |                      |         |                  |
+                                +----------------------+         +------------------+</div>
+
+  <h2>3.2 Technology Stack</h2>
+  <table>
+    <tr>
+      <th>Component</th>
+      <th>Technology</th>
+    </tr>
+    <tr>
+      <td>API Integration</td>
+      <td>Google Ads API v18 (REST), Python client library</td>
+    </tr>
+    <tr>
+      <td>Data Pipeline</td>
+      <td>Google Cloud Functions (Python 3.12)</td>
+    </tr>
+    <tr>
+      <td>Scheduling</td>
+      <td>Google Cloud Scheduler</td>
+    </tr>
+    <tr>
+      <td>Data Storage</td>
+      <td>Google BigQuery</td>
+    </tr>
+    <tr>
+      <td>Visualization</td>
+      <td>Looker Studio (formerly Google Data Studio)</td>
+    </tr>
+    <tr>
+      <td>Notifications</td>
+      <td>Email via Gmail API / Slack Webhooks</td>
+    </tr>
+    <tr>
+      <td>Hosting</td>
+      <td>Google Cloud Platform</td>
+    </tr>
+  </table>
+
+  <h1>4. Google Ads API Usage</h1>
+
+  <h2>4.1 Access Level</h2>
+  <p>
+    The tool requires <strong>read-only access</strong> to Google Ads accounts. It does not create,
+    modify, or delete any campaigns, ad groups, ads, or keywords. No billing or account
+    management operations are performed.
+  </p>
+
+  <h2>4.2 API Resources Used</h2>
+  <table>
+    <tr>
+      <th>Resource</th>
+      <th>Purpose</th>
+      <th>Access Type</th>
+    </tr>
+    <tr>
+      <td>GoogleAdsService.SearchStream</td>
+      <td>Query campaign, ad group, and keyword performance metrics</td>
+      <td>Read-only</td>
+    </tr>
+    <tr>
+      <td>Customer</td>
+      <td>Retrieve account information and linked accounts</td>
+      <td>Read-only</td>
+    </tr>
+    <tr>
+      <td>Campaign</td>
+      <td>Retrieve campaign names, status, and settings for reporting context</td>
+      <td>Read-only</td>
+    </tr>
+    <tr>
+      <td>AdGroup</td>
+      <td>Retrieve ad group structure for detailed breakdowns</td>
+      <td>Read-only</td>
+    </tr>
+    <tr>
+      <td>Metrics</td>
+      <td>Impressions, clicks, conversions, cost, CTR, CPC, ROAS</td>
+      <td>Read-only</td>
+    </tr>
+  </table>
+
+  <h2>4.3 API Query Examples</h2>
+  <p>Typical GAQL query used to retrieve campaign performance data:</p>
+  <div class="diagram">SELECT
+  campaign.name,
+  campaign.status,
+  metrics.impressions,
+  metrics.clicks,
+  metrics.cost_micros,
+  metrics.conversions,
+  metrics.conversions_value,
+  metrics.ctr,
+  metrics.average_cpc,
+  segments.date
+FROM campaign
+WHERE segments.date DURING LAST_30_DAYS
+  AND campaign.status != 'REMOVED'
+ORDER BY metrics.cost_micros DESC</div>
+
+  <h2>4.4 Rate Limiting & Best Practices</h2>
+  <ul>
+    <li>API calls are batched and scheduled during off-peak hours</li>
+    <li>Data is retrieved once daily (configurable per client) to minimize API usage</li>
+    <li>Results are cached in BigQuery to avoid redundant API calls</li>
+    <li>Exponential backoff is implemented for transient errors</li>
+    <li>All API usage stays well within Google's rate limits</li>
+  </ul>
+
+  <h1>5. Data Flow</h1>
+
+  <h2>5.1 Data Collection Process</h2>
+  <ol>
+    <li><strong>Trigger:</strong> Cloud Scheduler triggers a Cloud Function on a daily schedule</li>
+    <li><strong>Authentication:</strong> OAuth 2.0 refresh token is used to authenticate with the Google Ads API</li>
+    <li><strong>Data Retrieval:</strong> GAQL queries pull performance metrics for the configured date range</li>
+    <li><strong>Transformation:</strong> Raw API responses are normalized and enriched with calculated KPIs</li>
+    <li><strong>Storage:</strong> Processed data is written to BigQuery tables (partitioned by date)</li>
+    <li><strong>Visualization:</strong> Looker Studio dashboards query BigQuery in real-time</li>
+    <li><strong>Reporting:</strong> Scheduled report jobs generate and email PDF summaries to clients</li>
+  </ol>
+
+  <h2>5.2 Authentication & Security</h2>
+  <ul>
+    <li>OAuth 2.0 is used for all API authentication</li>
+    <li>Refresh tokens are stored encrypted in Google Cloud Secret Manager</li>
+    <li>Each client's data is isolated in separate BigQuery datasets</li>
+    <li>Access to dashboards is controlled via Google account permissions</li>
+    <li>No Google Ads credentials are stored in application code or version control</li>
+  </ul>
+
+  <h1>6. User Interaction Flow</h1>
+
+  <h2>6.1 Client Onboarding</h2>
+  <ol>
+    <li>Client grants read-only access to their Google Ads account via OAuth consent screen</li>
+    <li>Tool retrieves and stores the OAuth refresh token securely</li>
+    <li>Initial data backfill is performed (last 90 days)</li>
+    <li>Dashboard is configured and shared with the client</li>
+    <li>Automated reporting schedule is set up (weekly/monthly)</li>
+  </ol>
+
+  <h2>6.2 Ongoing Usage</h2>
+  <ul>
+    <li>Data is automatically updated daily &mdash; no manual intervention required</li>
+    <li>Clients access their dashboards via a shared Looker Studio link</li>
+    <li>Performance alerts are delivered via email when thresholds are triggered</li>
+    <li>Scheduled PDF reports are sent to the client's email</li>
+  </ul>
+
+  <h1>7. Compliance</h1>
+  <ul>
+    <li>The tool complies with the <strong>Google Ads API Terms of Service</strong></li>
+    <li>Only read-only API access is used &mdash; no campaign modifications are made</li>
+    <li>User data is processed in accordance with <strong>GDPR</strong> regulations</li>
+    <li>Clients can revoke access at any time via their Google Account settings</li>
+    <li>All data is hosted within the EU (Google Cloud region europe-west3, Frankfurt)</li>
+    <li>A privacy policy is published at <strong>jochenreider.com/#datenschutz</strong></li>
+  </ul>
+
+  <div class="footer">
+    <p>Jochen Reider &mdash; jochenreider.com &mdash; kontakt@jochenreider.com &mdash; February 2026</p>
+  </div>
+
+</body>
+</html>
