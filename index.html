@@ -94,7 +94,7 @@
           individuelles Reporting aufbauen? Ich freue mich auf Ihre Nachricht.
         </p>
         <div class="contact-details">
-          <p><strong>E-Mail:</strong> kontakt&#64;jochenreider.com</p>
+          <p><strong>E-Mail:</strong> <span id="em-kontakt"></span></p>
           <p><strong>Web:</strong> <a href="https://jochenreider.com">jochenreider.com</a></p>
         </div>
       </div>
@@ -116,7 +116,7 @@
 
         <h3>Kontakt</h3>
         <p>
-          E-Mail: kontakt&#64;jochenreider.com
+          E-Mail: <span id="em-impressum"></span>
         </p>
 
         <h3>Verantwortlich f&uuml;r den Inhalt</h3>
@@ -152,7 +152,7 @@
           Verantwortlich f&uuml;r die Datenverarbeitung auf dieser Website ist:<br>
           Jochen Reider<br>
           Lisa Scholl Weg 2, 6170 Zirl, &Ouml;sterreich<br>
-          E-Mail: kontakt&#64;jochenreider.com
+          E-Mail: <span id="em-datenschutz"></span>
         </p>
 
         <h3>3. Datenerfassung auf dieser Website</h3>
@@ -204,6 +204,13 @@
       link.addEventListener('click', function() {
         document.querySelector('.nav-links').classList.remove('active');
       });
+    });
+
+    // Render email addresses (assembled via JS to avoid Cloudflare obfuscation)
+    var em = 'kontakt' + '@' + 'jochenreider.com';
+    ['em-kontakt', 'em-impressum', 'em-datenschutz'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) el.textContent = em;
     });
   </script>
 
