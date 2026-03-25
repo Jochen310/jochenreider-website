@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Design Documentation - Google Ads Reporting Tool</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design Documentation – Google Ads Asset Manager</title>
   <style>
     body {
       font-family: 'Segoe UI', Arial, sans-serif;
@@ -73,12 +74,20 @@
     li {
       margin: 4px 0;
     }
+    a { color: #2563eb; }
     .footer {
       margin-top: 60px;
       padding-top: 16px;
       border-top: 1px solid #ddd;
       color: #888;
       font-size: 12px;
+    }
+    .nav-back {
+      margin-bottom: 32px;
+    }
+    .nav-back a {
+      color: #2563eb;
+      font-size: 13px;
     }
     @media print {
       body { margin: 20px; }
@@ -87,243 +96,178 @@
 </head>
 <body>
 
-  <div class="header">
-    <h1>Design Documentation</h1>
-    <p><strong>Google Ads Automated Reporting Tool</strong></p>
-    <p>Jochen Reider | jochenreider.com | kontakt@jochenreider.com</p>
-    <p>Version 1.0 &mdash; February 2026</p>
+  <div class="nav-back">
+    <a href="index.html">&larr; Back to jochenreider.com</a>
   </div>
 
-  <h1>1. Executive Summary</h1>
+  <div class="header">
+    <h1>Design Documentation</h1>
+    <p><strong>Google Ads Asset Manager</strong></p>
+    <p>Jochen Reider &mdash; <a href="https://www.jochenreider.com">jochenreider.com</a> &mdash; kontakt@jochenreider.com</p>
+    <p>Version 1.0 &mdash; March 2026</p>
+    <p>Tool URL: <a href="https://ads.jochenreider.com">ads.jochenreider.com</a></p>
+  </div>
+
+  <h1>1. Overview</h1>
   <p>
-    This document describes the design and architecture of our Google Ads Automated Reporting Tool.
-    The tool uses the Google Ads API to retrieve campaign performance data and generate
-    automated reports and dashboards for small and medium-sized businesses. The tool operates
-    in a read-only capacity and does not modify any campaign settings, budgets, or ad content.
+    Google Ads Asset Manager is a <strong>private, single-user web application</strong> that connects
+    directly to the Google Ads API to provide a centralized interface for managing, analyzing, and
+    optimizing Google Ads campaigns. The tool enables the account owner to review asset-level
+    performance data, receive AI-generated optimization suggestions, and apply changes (such as
+    updated ad copy) directly to Google Ads campaigns without manual interaction in the Google Ads UI.
+  </p>
+  <p>
+    The application is built and operated exclusively by Jochen Reider for managing his own Google
+    Ads account. No third-party clients, agencies, or external users have access to the tool.
   </p>
 
-  <h1>2. Product Overview</h1>
-
-  <h2>2.1 Purpose</h2>
-  <p>
-    The tool automates the process of collecting, aggregating, and visualizing Google Ads campaign
-    data. It replaces manual data exports and spreadsheet-based reporting with an automated pipeline
-    that delivers scheduled reports to clients.
-  </p>
-
-  <h2>2.2 Target Users</h2>
+  <h1>2. Business Purpose</h1>
+  <p>The primary purpose of the tool is to streamline the management and optimization of Google Ads campaigns by:</p>
   <ul>
-    <li>Small and medium-sized businesses running Google Ads campaigns</li>
-    <li>Marketing managers who need regular performance insights</li>
-    <li>Business owners who want transparency into their ad spend</li>
+    <li>Centralizing campaign and asset performance data in a single dashboard</li>
+    <li>Using AI (Large Language Model API) to analyze existing ad assets and generate improved headlines, descriptions, and ad copy</li>
+    <li>Enabling direct write-back of optimized assets to Google Ads via the API, eliminating manual copy-paste workflows</li>
+    <li>Monitoring performance trends and flagging underperforming assets automatically</li>
   </ul>
-
-  <h2>2.3 Core Features</h2>
-  <table>
-    <tr>
-      <th>Feature</th>
-      <th>Description</th>
-    </tr>
-    <tr>
-      <td>Automated Data Retrieval</td>
-      <td>Scheduled pulls of campaign, ad group, and keyword performance data via the Google Ads API</td>
-    </tr>
-    <tr>
-      <td>KPI Dashboards</td>
-      <td>Visual dashboards showing key metrics: CTR, CPC, conversions, ROAS, cost-per-acquisition</td>
-    </tr>
-    <tr>
-      <td>Scheduled Reports</td>
-      <td>Automated weekly and monthly PDF/email reports delivered to clients</td>
-    </tr>
-    <tr>
-      <td>Performance Alerts</td>
-      <td>Email notifications when KPIs exceed or fall below defined thresholds</td>
-    </tr>
-    <tr>
-      <td>Historical Analysis</td>
-      <td>Trend analysis and period-over-period comparisons</td>
-    </tr>
-  </table>
+  <p>
+    This tool replaces manual, time-consuming workflows in the Google Ads UI with an automated,
+    data-driven pipeline.
+  </p>
 
   <h1>3. Architecture</h1>
 
-  <h2>3.1 System Overview</h2>
-  <div class="diagram">
-+---------------------+         +----------------------+         +------------------+
-|                     |         |                      |         |                  |
-|   Google Ads API    | ------> |   Data Pipeline      | ------> |   Data Storage   |
-|   (Read-Only)       |         |   (Cloud Functions)  |         |   (BigQuery)     |
-|                     |         |                      |         |                  |
-+---------------------+         +----------------------+         +------------------+
-                                                                         |
-                                                                         v
-                                +----------------------+         +------------------+
-                                |                      |         |                  |
-                                |   Email Reports      | <------ |   Dashboard      |
-                                |   (Scheduled)        |         |   (Looker Studio)|
-                                |                      |         |                  |
-                                +----------------------+         +------------------+</div>
+  <h2>3.1 System Components</h2>
+  <div class="diagram">Browser (User)
+     │
+     ▼
+React Frontend (ads.jochenreider.com)
+     │  HTTPS
+     ▼
+Node.js / Express Backend
+     │
+     ├── Google OAuth 2.0 (Authentication)
+     ├── Google Ads API (Read + Write)
+     └── AI Language Model API (Suggestions)</div>
 
   <h2>3.2 Technology Stack</h2>
   <table>
-    <tr>
-      <th>Component</th>
-      <th>Technology</th>
-    </tr>
-    <tr>
-      <td>API Integration</td>
-      <td>Google Ads API v18 (REST), Python client library</td>
-    </tr>
-    <tr>
-      <td>Data Pipeline</td>
-      <td>Google Cloud Functions (Python 3.12)</td>
-    </tr>
-    <tr>
-      <td>Scheduling</td>
-      <td>Google Cloud Scheduler</td>
-    </tr>
-    <tr>
-      <td>Data Storage</td>
-      <td>Google BigQuery</td>
-    </tr>
-    <tr>
-      <td>Visualization</td>
-      <td>Looker Studio (formerly Google Data Studio)</td>
-    </tr>
-    <tr>
-      <td>Notifications</td>
-      <td>Email via Gmail API / Slack Webhooks</td>
-    </tr>
-    <tr>
-      <td>Hosting</td>
-      <td>Google Cloud Platform</td>
-    </tr>
+    <tr><th>Component</th><th>Technology</th></tr>
+    <tr><td>Frontend</td><td>React, TypeScript, Tailwind CSS, Vite</td></tr>
+    <tr><td>Backend</td><td>Node.js, Express, TypeScript</td></tr>
+    <tr><td>Authentication</td><td>Google OAuth 2.0</td></tr>
+    <tr><td>API Integration</td><td>Google Ads API (REST/gRPC)</td></tr>
+    <tr><td>AI Suggestions</td><td>Anthropic Claude API</td></tr>
+    <tr><td>Hosting</td><td>Linux Server, Cloudflare Tunnel</td></tr>
+    <tr><td>Session Storage</td><td>Server-side encrypted sessions</td></tr>
   </table>
 
   <h1>4. Google Ads API Usage</h1>
 
-  <h2>4.1 Access Level</h2>
+  <h2>4.1 Authentication</h2>
+  <p>The application uses Google OAuth 2.0 with the following scope:</p>
+  <ul>
+    <li><code>https://www.googleapis.com/auth/adwords</code> &mdash; Full access to the Google Ads account for reading and writing campaign data.</li>
+  </ul>
   <p>
-    The tool requires <strong>read-only access</strong> to Google Ads accounts. It does not create,
-    modify, or delete any campaigns, ad groups, ads, or keywords. No billing or account
-    management operations are performed.
+    Authentication tokens are stored server-side in encrypted sessions.
+    Tokens are never exposed to the frontend client.
   </p>
 
-  <h2>4.2 API Resources Used</h2>
+  <h2>4.2 Read Operations</h2>
+  <p>The following data is retrieved from the Google Ads API:</p>
   <table>
-    <tr>
-      <th>Resource</th>
-      <th>Purpose</th>
-      <th>Access Type</th>
-    </tr>
-    <tr>
-      <td>GoogleAdsService.SearchStream</td>
-      <td>Query campaign, ad group, and keyword performance metrics</td>
-      <td>Read-only</td>
-    </tr>
-    <tr>
-      <td>Customer</td>
-      <td>Retrieve account information and linked accounts</td>
-      <td>Read-only</td>
-    </tr>
-    <tr>
-      <td>Campaign</td>
-      <td>Retrieve campaign names, status, and settings for reporting context</td>
-      <td>Read-only</td>
-    </tr>
-    <tr>
-      <td>AdGroup</td>
-      <td>Retrieve ad group structure for detailed breakdowns</td>
-      <td>Read-only</td>
-    </tr>
-    <tr>
-      <td>Metrics</td>
-      <td>Impressions, clicks, conversions, cost, CTR, CPC, ROAS</td>
-      <td>Read-only</td>
-    </tr>
+    <tr><th>Resource</th><th>Data Retrieved</th><th>Access</th></tr>
+    <tr><td>Campaigns</td><td>List of all campaigns, status, budget, bidding strategy</td><td>Read</td></tr>
+    <tr><td>Ad Groups</td><td>Ad groups per campaign, status, targeting</td><td>Read</td></tr>
+    <tr><td>Ads &amp; Assets</td><td>All ad assets including headlines, descriptions, images, sitelinks</td><td>Read</td></tr>
+    <tr><td>Performance Metrics</td><td>Impressions, clicks, CTR, conversions, cost, ROAS per asset and campaign</td><td>Read</td></tr>
+    <tr><td>Asset Labels</td><td>Google's asset performance ratings (BEST, GOOD, LOW, LEARNING, PENDING)</td><td>Read</td></tr>
   </table>
 
-  <h2>4.3 API Query Examples</h2>
-  <p>Typical GAQL query used to retrieve campaign performance data:</p>
-  <div class="diagram">SELECT
-  campaign.name,
-  campaign.status,
-  metrics.impressions,
-  metrics.clicks,
-  metrics.cost_micros,
-  metrics.conversions,
-  metrics.conversions_value,
-  metrics.ctr,
-  metrics.average_cpc,
-  segments.date
-FROM campaign
-WHERE segments.date DURING LAST_30_DAYS
-  AND campaign.status != 'REMOVED'
-ORDER BY metrics.cost_micros DESC</div>
+  <h2>4.3 Write Operations</h2>
+  <p>
+    The application uses the Google Ads API to perform write operations on the authenticated account.
+    <strong>All write operations are explicitly confirmed by the user in the UI before being executed.
+    No automated changes are made without user approval.</strong>
+  </p>
+  <table>
+    <tr><th>Operation</th><th>Description</th></tr>
+    <tr><td>Update Ad Assets</td><td>Apply AI-generated or manually edited headlines and descriptions to existing Responsive Search Ads (RSAs)</td></tr>
+    <tr><td>Update Ad Status</td><td>Pause or enable individual ads or entire ad groups based on performance thresholds</td></tr>
+    <tr><td>Pin Assets</td><td>Pin high-performing headlines or descriptions to specific positions within RSAs</td></tr>
+    <tr><td>Remove Underperforming Assets</td><td>Remove individual assets (headlines, descriptions) from RSAs consistently rated LOW</td></tr>
+    <tr><td>Create New Ad Variations</td><td>Create new RSA variations within existing ad groups using AI-generated copy</td></tr>
+  </table>
 
-  <h2>4.4 Rate Limiting & Best Practices</h2>
-  <ul>
-    <li>API calls are batched and scheduled during off-peak hours</li>
-    <li>Data is retrieved once daily (configurable per client) to minimize API usage</li>
-    <li>Results are cached in BigQuery to avoid redundant API calls</li>
-    <li>Exponential backoff is implemented for transient errors</li>
-    <li>All API usage stays well within Google's rate limits</li>
-  </ul>
+  <h2>4.4 API Access Level Required</h2>
+  <p>
+    <strong>Basic Access</strong> is required. The tool manages a single Google Ads account
+    (the account owner's own account) and makes programmatic changes to ad assets and campaign
+    settings. Test Account access is insufficient because real campaign data and live ad
+    modifications are required for the tool to function as intended.
+  </p>
 
   <h1>5. Data Flow</h1>
+  <div class="diagram">1. User logs in via Google OAuth 2.0
+2. Backend fetches campaign + asset data from Google Ads API
+3. Frontend displays performance dashboard
+4. User selects campaign / asset for optimization
+5. Backend sends asset content to AI API for suggestion generation
+6. AI suggestions are displayed to the user
+7. User reviews and approves suggestions
+8. Backend applies approved changes via Google Ads API (mutate operations)
+9. Confirmation is shown to the user</div>
 
-  <h2>5.1 Data Collection Process</h2>
-  <ol>
-    <li><strong>Trigger:</strong> Cloud Scheduler triggers a Cloud Function on a daily schedule</li>
-    <li><strong>Authentication:</strong> OAuth 2.0 refresh token is used to authenticate with the Google Ads API</li>
-    <li><strong>Data Retrieval:</strong> GAQL queries pull performance metrics for the configured date range</li>
-    <li><strong>Transformation:</strong> Raw API responses are normalized and enriched with calculated KPIs</li>
-    <li><strong>Storage:</strong> Processed data is written to BigQuery tables (partitioned by date)</li>
-    <li><strong>Visualization:</strong> Looker Studio dashboards query BigQuery in real-time</li>
-    <li><strong>Reporting:</strong> Scheduled report jobs generate and email PDF summaries to clients</li>
-  </ol>
-
-  <h2>5.2 Authentication & Security</h2>
+  <h1>6. Security &amp; Privacy</h1>
   <ul>
-    <li>OAuth 2.0 is used for all API authentication</li>
-    <li>Refresh tokens are stored encrypted in Google Cloud Secret Manager</li>
-    <li>Each client's data is isolated in separate BigQuery datasets</li>
-    <li>Access to dashboards is controlled via Google account permissions</li>
-    <li>No Google Ads credentials are stored in application code or version control</li>
+    <li><strong>Authentication:</strong> Google OAuth 2.0 &mdash; only the account owner can log in</li>
+    <li><strong>Transport:</strong> All communication over HTTPS (Cloudflare Tunnel + TLS)</li>
+    <li><strong>Token Storage:</strong> OAuth tokens stored server-side only, never in the browser</li>
+    <li><strong>Data Retention:</strong> No Google Ads data is stored persistently; all data is fetched live from the API per session</li>
+    <li><strong>AI Processing:</strong> Ad text fragments are sent to the AI API for suggestion generation only; no personal user data is transmitted</li>
+    <li><strong>Access Control:</strong> Single-user application &mdash; no multi-tenancy, no shared access</li>
+    <li><strong>No Third Parties:</strong> No analytics, tracking, or advertising SDKs are used</li>
   </ul>
 
-  <h1>6. User Interaction Flow</h1>
+  <h1>7. User Interface</h1>
 
-  <h2>6.1 Client Onboarding</h2>
-  <ol>
-    <li>Client grants read-only access to their Google Ads account via OAuth consent screen</li>
-    <li>Tool retrieves and stores the OAuth refresh token securely</li>
-    <li>Initial data backfill is performed (last 90 days)</li>
-    <li>Dashboard is configured and shared with the client</li>
-    <li>Automated reporting schedule is set up (weekly/monthly)</li>
-  </ol>
+  <h2>7.1 Login Page</h2>
+  <p>Public landing page describing the tool's purpose, with Google OAuth login button. Includes links to Privacy Policy and Terms of Service.</p>
 
-  <h2>6.2 Ongoing Usage</h2>
+  <h2>7.2 Campaign Dashboard</h2>
+  <p>Overview of all active campaigns with key performance metrics (impressions, clicks, CTR, cost, conversions). Sortable and filterable.</p>
+
+  <h2>7.3 Asset Performance View</h2>
+  <p>Detailed view of all assets for a selected campaign. Shows per-asset performance labels and metrics. Allows selection of assets for AI optimization.</p>
+
+  <h2>7.4 AI Suggestions View</h2>
+  <p>Displays AI-generated suggestions for improved headlines and descriptions. Side-by-side comparison with current assets. User can approve, edit, or reject individual suggestions before applying them to Google Ads.</p>
+
+  <h1>8. Compliance</h1>
   <ul>
-    <li>Data is automatically updated daily &mdash; no manual intervention required</li>
-    <li>Clients access their dashboards via a shared Looker Studio link</li>
-    <li>Performance alerts are delivered via email when thresholds are triggered</li>
-    <li>Scheduled PDF reports are sent to the client's email</li>
+    <li>The application is used exclusively to manage the developer's own Google Ads account.</li>
+    <li>All API usage complies with the <a href="https://developers.google.com/google-ads/api/docs/best-practices/policy" target="_blank" rel="noopener">Google Ads API Terms of Service</a>.</li>
+    <li>The tool does not resell, redistribute, or share Google Ads data with any third party.</li>
+    <li>Google user data is handled in accordance with the <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener">Google API Services User Data Policy</a>, including Limited Use requirements.</li>
+    <li>Privacy Policy: <a href="https://www.jochenreider.com/privacy.html">https://www.jochenreider.com/privacy.html</a></li>
+    <li>Terms of Service: <a href="https://www.jochenreider.com/terms.html">https://www.jochenreider.com/terms.html</a></li>
   </ul>
 
-  <h1>7. Compliance</h1>
-  <ul>
-    <li>The tool complies with the <strong>Google Ads API Terms of Service</strong></li>
-    <li>Only read-only API access is used &mdash; no campaign modifications are made</li>
-    <li>User data is processed in accordance with <strong>GDPR</strong> regulations</li>
-    <li>Clients can revoke access at any time via their Google Account settings</li>
-    <li>All data is hosted within the EU (Google Cloud region europe-west3, Frankfurt)</li>
-    <li>A privacy policy is published at <strong>jochenreider.com/#datenschutz</strong></li>
-  </ul>
+  <h1>9. Contact</h1>
+  <p>
+    <strong>Jochen Reider</strong><br>
+    Lisa Scholl Weg 2, 6170 Zirl, Austria<br>
+    kontakt@jochenreider.com<br>
+    <a href="https://www.jochenreider.com">https://www.jochenreider.com</a>
+  </p>
 
   <div class="footer">
-    <p>Jochen Reider &mdash; jochenreider.com &mdash; kontakt@jochenreider.com &mdash; February 2026</p>
+    <p>
+      Jochen Reider &mdash; jochenreider.com &mdash; kontakt@jochenreider.com &mdash; March 2026
+      &nbsp;|&nbsp; <a href="index.html">Homepage</a>
+      &nbsp;|&nbsp; <a href="privacy.html">Privacy Policy</a>
+      &nbsp;|&nbsp; <a href="terms.html">Terms of Service</a>
+    </p>
   </div>
 
 </body>
