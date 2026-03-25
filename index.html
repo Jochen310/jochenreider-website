@@ -253,7 +253,7 @@
 
     // Render email addresses (assembled via JS to avoid Cloudflare obfuscation)
     var em = 'kontakt' + '@' + 'jochenreider.com';
-    ['em-kontakt', 'em-impressum', 'em-datenschutz'].forEach(function(id) {
+    ['em-kontakt', 'em-impressum'].forEach(function(id) {
       var el = document.getElementById(id);
       if (el) el.textContent = em;
     });
