@@ -14,10 +14,10 @@
       <button class="nav-toggle" aria-label="Menu">&#9776;</button>
       <ul class="nav-links">
         <li><a href="#home">Startseite</a></li>
-        <li><a href="#projekt">Projekt</a></li>
+        <li><a href="#tool">Tool</a></li>
         <li><a href="#kontakt">Kontakt</a></li>
         <li><a href="#impressum">Impressum</a></li>
-        <li><a href="#datenschutz">Datenschutz</a></li>
+        <li><a href="privacy.html">Datenschutz</a></li>
         <li><a href="terms.html">Nutzungsbedingungen</a></li>
       </ul>
     </div>
@@ -26,16 +26,82 @@
   <!-- STARTSEITE -->
   <section id="home" class="hero">
     <div class="container">
-      <h1>Google Ads Automatisierung &amp; Reporting</h1>
-      <p class="hero-sub">Datengetriebene Kampagnenoptimierung mit der Google Ads API</p>
-      <a href="#projekt" class="btn">Mehr erfahren</a>
+      <h1>Google Ads Asset Manager</h1>
+      <p class="hero-sub">Datengetriebene Kampagnenoptimierung mit der Google Ads API &ndash; entwickelt von Jochen Reider</p>
+      <a href="#tool" class="btn">Zum Tool</a>
     </div>
   </section>
 
-  <!-- PROJEKT -->
-  <section id="projekt" class="section">
+  <!-- TOOL -->
+  <section id="tool" class="section">
     <div class="container">
-      <h2>Projektbeschreibung</h2>
+      <h2>Google Ads Asset Manager Tool</h2>
+      <p style="color:#4b5563; margin-bottom: 32px; max-width: 700px;">
+        Das Google Ads Asset Manager ist eine private Web-Applikation unter
+        <a href="https://ads.jochenreider.com">ads.jochenreider.com</a>, die &uuml;ber
+        die offizielle Google Ads API eine direkte Verwaltung und Optimierung von Google Ads-Kampagnen erm&ouml;glicht.
+        Die Applikation wird ausschlie&szlig;lich f&uuml;r die Verwaltung des eigenen Google Ads-Kontos genutzt.
+      </p>
+      <div class="card-grid">
+        <div class="card">
+          <h3>Kampagnen-Dashboard</h3>
+          <p>
+            &Uuml;bersicht aller aktiven Kampagnen mit den wichtigsten Performance-Kennzahlen:
+            Impressionen, Klicks, CTR, Kosten, Conversions und ROAS &ndash; direkt aus der Google Ads API.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Asset-Performance-Analyse</h3>
+          <p>
+            Detaillierte Ansicht aller Ad Assets (Headlines, Descriptions) einer Kampagne mit
+            Google&apos;s Asset-Performance-Labels (BEST, GOOD, LOW) und Optimierungspotenzial.
+          </p>
+        </div>
+        <div class="card">
+          <h3>KI-Optimierungsvorschl&auml;ge</h3>
+          <p>
+            KI-generierte Vorschl&auml;ge f&uuml;r verbesserte Headlines und Descriptions. Nutzer
+            pr&uuml;fen und genehmigen jeden Vorschlag explizit, bevor er via Google Ads API
+            zur&uuml;ckgeschrieben wird.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Sichere Google OAuth Authentifizierung</h3>
+          <p>
+            Zugang ausschlie&szlig;lich per Google OAuth 2.0. OAuth-Token werden serverseitig
+            verschl&uuml;sselt gespeichert. Kein externer Zugriff &ndash; nur der Kontoinhaber
+            kann sich anmelden.
+          </p>
+        </div>
+      </div>
+      <div class="tech-stack">
+        <h3>Technologie-Stack</h3>
+        <ul>
+          <li>Google Ads API (REST &amp; gRPC)</li>
+          <li>Google OAuth 2.0</li>
+          <li>React &amp; TypeScript</li>
+          <li>Node.js / Express</li>
+          <li>Anthropic Claude API (KI-Vorschl&auml;ge)</li>
+          <li>Cloudflare Tunnel (HTTPS)</li>
+        </ul>
+      </div>
+      <div style="margin-top: 32px; padding: 24px; background: #f1f5f9; border-radius: 12px;">
+        <p style="color: #4b5563; font-size: 0.9rem; margin: 0;">
+          <strong>Datenschutz &amp; Compliance:</strong> Die Applikation entspricht der
+          <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener">Google API Services User Data Policy</a>
+          einschlie&szlig;lich der Limited Use Anforderungen. Google Ads-Daten werden nicht dauerhaft
+          gespeichert und nicht an Dritte verkauft. Details in der
+          <a href="privacy.html">Datenschutzerkl&auml;rung</a> und den
+          <a href="terms.html">Nutzungsbedingungen</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJEKT (Dienstleistungen) -->
+  <section id="projekt" class="section section-alt">
+    <div class="container">
+      <h2>Google Ads Automatisierung &amp; Reporting</h2>
       <div class="card-grid">
         <div class="card">
           <h3>Automatisiertes Kampagnen-Reporting</h3>
@@ -139,49 +205,24 @@
   <!-- DATENSCHUTZ -->
   <section id="datenschutz" class="section section-alt">
     <div class="container">
-      <h2>Datenschutzerkl&auml;rung</h2>
+      <h2>Datenschutz</h2>
       <div class="legal">
-        <h3>1. Datenschutz auf einen Blick</h3>
         <p>
-          Die folgenden Hinweise geben einen &Uuml;berblick dar&uuml;ber, was mit Ihren
-          personenbezogenen Daten passiert, wenn Sie diese Website besuchen.
-        </p>
-
-        <h3>2. Verantwortlicher</h3>
-        <p>
-          Verantwortlich f&uuml;r die Datenverarbeitung auf dieser Website ist:<br>
-          Jochen Reider<br>
-          Lisa Scholl Weg 2, 6170 Zirl, &Ouml;sterreich<br>
-          E-Mail: <span id="em-datenschutz"></span>
-        </p>
-
-        <h3>3. Datenerfassung auf dieser Website</h3>
-        <p>
-          <strong>Hosting:</strong> Diese Website wird bei Cloudflare gehostet. Cloudflare kann
-          technisch bedingt Zugriffsdaten erheben (z.&nbsp;B. IP-Adresse, Zeitpunkt des Zugriffs,
-          aufgerufene Seiten). Details finden Sie in der
-          <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener">Datenschutzerkl&auml;rung von Cloudflare</a>.
+          Die vollst&auml;ndige Datenschutzerkl&auml;rung f&uuml;r diese Website und das
+          Google Ads Asset Manager Tool (ads.jochenreider.com) finden Sie unter:
         </p>
         <p>
-          <strong>Server-Log-Dateien:</strong> Der Provider erhebt und speichert automatisch
-          Informationen in Server-Log-Dateien, die Ihr Browser automatisch &uuml;bermittelt.
-          Dies sind: Browsertyp und -version, verwendetes Betriebssystem, Referrer-URL,
-          Hostname des zugreifenden Rechners, Uhrzeit der Serveranfrage und IP-Adresse.
+          <a href="privacy.html" style="font-size: 1.1rem; font-weight: 600;">
+            &rarr; Datenschutzerkl&auml;rung (privacy.html)
+          </a>
         </p>
-
-        <h3>4. Ihre Rechte</h3>
         <p>
-          Sie haben jederzeit das Recht auf unentgeltliche Auskunft &uuml;ber Ihre gespeicherten
-          personenbezogenen Daten, deren Herkunft und Empf&auml;nger und den Zweck der
-          Datenverarbeitung sowie ein Recht auf Berichtigung, Sperrung oder L&ouml;schung
-          dieser Daten. Hierzu sowie zu weiteren Fragen zum Thema Datenschutz k&ouml;nnen Sie
-          sich jederzeit unter der im Impressum angegebenen Adresse an mich wenden.
-        </p>
-
-        <h3>5. Cookies</h3>
-        <p>
-          Diese Website verwendet keine eigenen Cookies. Es werden keine Tracking- oder
-          Analyse-Tools eingesetzt.
+          Die Datenschutzerkl&auml;rung behandelt insbesondere die Verwendung von
+          Google OAuth 2.0, den Zugriff auf die Google Ads API und die Einhaltung der
+          <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener">
+            Google API Services User Data Policy
+          </a>
+          (Limited Use).
         </p>
       </div>
     </div>
@@ -189,7 +230,11 @@
 
   <footer>
     <div class="container">
-      <p>&copy; 2026 Jochen Reider. Alle Rechte vorbehalten.</p>
+      <p>&copy; 2026 Jochen Reider. Alle Rechte vorbehalten.
+        &nbsp;|&nbsp; <a href="#impressum">Impressum</a>
+        &nbsp;|&nbsp; <a href="privacy.html">Datenschutz</a>
+        &nbsp;|&nbsp; <a href="terms.html">Nutzungsbedingungen</a>
+      </p>
     </div>
   </footer>
 
